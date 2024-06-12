@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useParams,Link } from 'react-router-dom'
 import axios from 'axios'
 
-function Post() {
+function Post({socket}) {
     const { postId}=useParams()
     const [post,setPost]=useState()
+    
     useEffect(()=>{
         axios.get("http://localhost:8000/api/posts/"+postId)
         .then(res=>setPost(res.data))

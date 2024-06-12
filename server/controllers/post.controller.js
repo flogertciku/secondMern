@@ -11,7 +11,7 @@ module.exports.CreatePost = (request,response)=>{
 module.exports.getAllPosts = (request, response) => {
     Post.find({})
         .then(persons => {
-            console.log(persons); //console logs are optional, but they are highly recommended for troubleshooting!
+            // console.log(persons); //console logs are optional, but they are highly recommended for troubleshooting!
             response.json(persons);
         })
         .catch(err => {

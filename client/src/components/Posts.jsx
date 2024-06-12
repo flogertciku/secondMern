@@ -2,14 +2,17 @@ import React,{useState,useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
-function Posts( {posts,setPosts,updated,setUpdated}) {
-   
+function Posts( {posts,setPosts,updated,setUpdated ,socket}) {
+    
     useEffect(()=>{
+      
         axios.get("http://localhost:8000/api/posts")
         .then(res=>{console.log(res.data);setPosts(res.data) })
         .catch(err=> console.log(err))
+        socket.on('fromServerCreated', data => {console.log(data);setUpdated(!updated)});
     },[updated])
     const DeletePost =(postId)=>{
+        socket.emit("fromReactCreate", {postId} , (data)=>console.log(data))
         axios.delete("http://localhost:8000/api/posts/"+postId)
         .then(res=>{setUpdated(!updated) })
         .catch(err=> console.log(err))
