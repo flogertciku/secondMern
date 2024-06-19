@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const bcrypt = require('bcrypt');
 const UserSchema = new mongoose.Schema({
     firstName: {
       type: String,
@@ -21,6 +22,7 @@ const UserSchema = new mongoose.Schema({
       required: [true, "Password is required"],
       minlength: [8, "Password must be 8 characters or longer"]
     },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
     
     
   }, {timestamps: true});
@@ -39,9 +41,11 @@ const UserSchema = new mongoose.Schema({
   UserSchema.pre('save', function(next) {
     bcrypt.hash(this.password, 10)
       .then(hash => {
+        // console.log("password",)
         this.password = hash;
         next();
-      });
+      })
+      // .catch(err => {console.log("err",err); next();});
   });
   
   module.exports = mongoose.model("User",UserSchema)  
